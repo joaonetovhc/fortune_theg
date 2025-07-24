@@ -1,41 +1,44 @@
-// script.js
-
-const spinBtn = document.getElementById("spinBtn");
-const reels = [
-  document.getElementById("reel1"),
-  document.getElementById("reel2"),
-  document.getElementById("reel3")
+const imagens = [
+  "../assets/img/bros.png",
+  "../assets/img/bros17.png",
+  "../assets/img/bros150.png",
+  "../assets/img/titan160.png",
+  "../assets/img/xre190.png",
+  "../assets/img/xre300.png"
 ];
-const resultText = document.getElementById("result");
-const balanceSpan = document.getElementById("balance");
 
-const icons = ["🏍️", "🚗", "🛵"];
+const balanceElement = document.getElementById('balance');
+const resultElement = document.getElementById('result');
+const spinBtn = document.getElementById('spinBtn');
+const reels = document.querySelectorAll('.reel img');
+const saldo = parseFloat(balanceElement.dataset.balance);
 
-spinBtn.addEventListener("click", () => {
-  spinBtn.disabled = true;
-  resultText.textContent = "Girando...";
 
-  fetch("../app/spin.php", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({})
-  })
-    .then(res => res.json())
-    .then(data => {
-      const { result, win, balance } = data;
+ let balance = "<?php echo $balanceElement['balance'] ?>";
 
-      for (let i = 0; i < reels.length; i++) {
-        reels[i].textContent = icons[result[i]];
-      }
+spinBtn.addEventListener('click', () => {
+  if (balance < 1) {
+    resultElement.textContent = "Saldo insuficiente!";
+    return;
+  }
 
-      balanceSpan.textContent = parseFloat(balance).toFixed(2);
-      resultText.textContent = win > 0 ? `🎉 Você ganhou R$ ${win.toFixed(2)}!` : "Tente novamente...";
-    })
-    .catch(err => {
-      resultText.textContent = "Erro ao girar. Tente novamente.";
-      console.error(err);
-    })
-    .finally(() => {
-      spinBtn.disabled = false;
-    });
+  balance -= 1;
+  let selected = [];
+
+  reels.forEach((reel, i) => {
+    const randomIndex = Math.floor(Math.random() * imagens.length);
+    reel.src = imagens[randomIndex];
+    selected.push(imagens[randomIndex]);
+  });
+
+  // Verifica se todos os ícones são iguais
+  const isWin = selected.every(val => val === selected[0]);
+  if (isWin) {
+    resultElement.textContent = "Você ganhou! 🏆 +R$5";
+    balance += 5;
+  } else {
+    resultElement.textContent = "Tente novamente!";
+  }
+
+  balanceElement.textContent = balance.toFixed(2);
 });

@@ -7,16 +7,21 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="container">
-    <h1>🏍️ Fortune Theg</h1>
-    <div class="slot">
-      <div class="reel" id="reel1">🏍️</div>
-      <div class="reel" id="reel2">🚗</div>
-      <div class="reel" id="reel3">🛵</div>
+  <div class="slot-machine">
+    <div class="header">🏍️ Fortune Theg 🏍️</div>
+
+    <div class="reels">
+      <div class="reel"><img src="../assets/img/xre190.png" alt="Reel 1" /></div>
+      <div class="reel"><img src="../assets/img/bros.png" alt="Reel 2" /></div>
+      <div class="reel"><img src="../assets/img/titan160.png" alt="Reel 3" /></div>
     </div>
-    <button id="spinBtn">GIRAR</button>
-    <p id="result"></p>
-    <p>Saldo: R$ <span id="balance">0.00</span></p>
+
+    <div class="controls">
+      <button id="spinBtn">GIRAR</button>
+      <p id="result"></p>
+      <span id="balance" data-balance="<?= $saldo['balance'] ?>">R$ <?= number_format($saldo['balance'], 2, ',', '.') ?></span>
+
+    </div>
   </div>
 
   <script src="script.js"></script>

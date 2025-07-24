@@ -11,15 +11,19 @@ $user_id = 1;
 // Consulta saldo atual
 $stmt = $pdo->prepare("SELECT balance FROM users WHERE id = ?");
 $stmt->execute([$user_id]);
-$user = $stmt->fetch();
+$saldo = $stmt->fetch();
+
+if($saldo['balance'] <= 0){
+    echo json_encode(["erro" => "Adicione mais saldo para jogar."]);
+}
 
 if (!$user) {
     echo json_encode(["error" => "Usuário não encontrado"]);
     exit;
 }
 
-$balance = $user['balance'];
-$bet = 1.00; // Valor fixo por giro
+$balance = $saldo['balance'];
+$bet = 0.50; // Valor fixo por giro
 
 if ($balance < $bet) {
     echo json_encode(["error" => "Saldo insuficiente"]);
@@ -31,12 +35,13 @@ $pdo->prepare("UPDATE users SET balance = balance - ? WHERE id = ?")
     ->execute([$bet, $user_id]);
 
 // Lógica do slot (ícones de 0 a 2)
-$reels = [rand(0,2), rand(0,2), rand(0,2)];
+$reels = [rand(0,3), rand(0,3), rand(0,3)];
 $win = 0.00;
 
-// Se os 3 forem iguais, ganha 5x a aposta
+// Se os 3 forem iguais, ganha pelo multiplicador
+$multi = 4.5;
 if ($reels[0] === $reels[1] && $reels[1] === $reels[2]) {
-    $win = $bet * 5;
+    $win = $bet * $multi;
     $pdo->prepare("UPDATE users SET balance = balance + ? WHERE id = ?")
         ->execute([$win, $user_id]);
 }
