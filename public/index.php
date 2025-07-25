@@ -1,3 +1,18 @@
+<?php
+  require_once '../app/db.php';
+
+  $user_id = 1;
+
+
+  $stmt = $pdo->prepare("SELECT balance FROM users WHERE id = ?");
+  $stmt->execute([$user_id]);
+  $saldo = $stmt->fetch();
+
+  echo "\nSALDO AQUI {$saldo['balance']}\n";
+ 
+
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>

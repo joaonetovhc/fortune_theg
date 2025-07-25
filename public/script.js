@@ -11,10 +11,6 @@ const balanceElement = document.getElementById('balance');
 const resultElement = document.getElementById('result');
 const spinBtn = document.getElementById('spinBtn');
 const reels = document.querySelectorAll('.reel img');
-const saldo = parseFloat(balanceElement.dataset.balance);
-
-
- let balance = "<?php echo $balanceElement['balance'] ?>";
 
 spinBtn.addEventListener('click', () => {
   if (balance < 1) {
