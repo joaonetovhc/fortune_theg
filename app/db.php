@@ -1,11 +1,10 @@
 <?php
 // backend/db.php
 
-
 $host = 'localhost';
 $dbname = 'fortune_theg';
 $user = 'root';
-$pass = '';
+$pass = '123456';
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $user, $pass);

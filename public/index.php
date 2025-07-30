@@ -6,10 +6,7 @@
 
   $stmt = $pdo->prepare("SELECT balance FROM users WHERE id = ?");
   $stmt->execute([$user_id]);
-  $saldo = $stmt->fetch();
-
-  echo "\nSALDO AQUI {$saldo['balance']}\n";
- 
+  $saldo = $stmt->fetch(); 
 
 ?>
 
@@ -35,6 +32,7 @@
       <button id="spinBtn">GIRAR</button>
       <p id="result"></p>
       <span id="balance" data-balance="<?= $saldo['balance'] ?>">R$ <?= number_format($saldo['balance'], 2, ',', '.') ?></span>
+
 
     </div>
   </div>

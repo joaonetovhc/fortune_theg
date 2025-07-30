@@ -13,28 +13,37 @@ const spinBtn = document.getElementById('spinBtn');
 const reels = document.querySelectorAll('.reel img');
 
 spinBtn.addEventListener('click', () => {
-  if (balance < 1) {
-    resultElement.textContent = "Saldo insuficiente!";
-    return;
-  }
+  fetch('../app/spin.php')
+  .then(response => response.json())
+  .then(data => {
+    if (data.error || data.erro){
+      resultElement.textContent = data.error || data.erro;
+      return;
+    }
 
-  balance -= 1;
-  let selected = [];
+    data.result.forEach((iconIndex, i) => {
+      reels[i].src = imagens[iconIndex];
+    });
 
-  reels.forEach((reel, i) => {
-    const randomIndex = Math.floor(Math.random() * imagens.length);
-    reel.src = imagens[randomIndex];
-    selected.push(imagens[randomIndex]);
+
+    if(data.win > 0){
+      resultElement.textContent = `Você ganhou! ${parseFloat(data.balance).toLocaleString('pt-BR', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+      })}`;
+      
+    } else{
+      resultElement.textContent = "Tente novamente!";
+    }
+
+    balanceElement.textContent = `R$ ${parseFloat(data.balance).toLocaleString('pt-BR', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+    })}`;
+
+  })
+  .catch(error => {
+    console.error("erro na requisição:", error);
+    resultElement.textContent = "Erro ao conectar com o servidor.";
   });
-
-  // Verifica se todos os ícones são iguais
-  const isWin = selected.every(val => val === selected[0]);
-  if (isWin) {
-    resultElement.textContent = "Você ganhou! 🏆 +R$5";
-    balance += 5;
-  } else {
-    resultElement.textContent = "Tente novamente!";
-  }
-
-  balanceElement.textContent = balance.toFixed(2);
 });
