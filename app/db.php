@@ -4,7 +4,8 @@
 $host = 'localhost';
 $dbname = 'fortune_theg';
 $user = 'root';
-$pass = '123456';
+// $pass = '123456';
+$pass = '';
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $user, $pass);

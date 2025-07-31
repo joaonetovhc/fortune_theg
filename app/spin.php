@@ -31,12 +31,12 @@ $pdo->prepare("UPDATE users SET balance = balance - ? WHERE id = ?")
     ->execute([$bet, $user_id]);
 
 // Lógica do slot (ícones de 0 a 2)
-$reels = [rand(0,5), rand(0,5), rand(0,5)];
+$reels = [rand(0,5), rand(0,5), rand(0,5), rand(0,5), rand(0,5), rand(0,5), rand(0,5), rand(0,5), rand(0,5)];
 $win = 0.00;
 
 // Se os 3 forem iguais, ganha pelo multiplicador
 $multi = 4.5;
-if ($reels[0] === $reels[1] && $reels[1] === $reels[2]) {
+if ($reels[3] === $reels[4] && $reels[4] === $reels[5]) {
     $win = $bet * $multi;
     $pdo->prepare("UPDATE users SET balance = balance + ? WHERE id = ?")
     ->execute([$win, $user_id]);
